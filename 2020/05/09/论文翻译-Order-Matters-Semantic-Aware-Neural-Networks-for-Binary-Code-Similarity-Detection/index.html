@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    
+    
+    
+    
+    <title>论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection | CICI&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Vulnerability Detection,binary code similarity detection,neural networks">
+    <meta name="description" content="论文标题              原文链接：Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection 发表">
+<meta name="keywords" content="Vulnerability Detection,binary code similarity detection,neural networks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection">
+<meta property="og:url" content="https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/index.html">
+<meta property="og:site_name" content="CICI&#39;s Blog">
+<meta property="og:description" content="论文标题              原文链接：Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection 发表">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/09/kECSBW.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/09/kEHV8y.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/09/kEHt2c.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/15/kYikFw.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/16/kYAYks.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/17/kYTCg1.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/17/kYTcGd.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/17/kYT1du.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/17/kYTGuD.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/18/kYUggw.png">
+<meta property="og:image" content="https://t1.picb.cc/uploads/2020/05/18/kYUZdg.png">
+<meta property="og:updated_time" content="2020-05-18T02:45:48.791Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection">
+<meta name="twitter:description" content="论文标题              原文链接：Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection 发表">
+<meta name="twitter:image" content="https://t1.picb.cc/uploads/2020/05/09/kECSBW.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="CICI&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+
+</head>
+
+<body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">CICI</h5>
+          <a href="mailto:lzxcici@qq.com" title="lzxcici@qq.com" class="mail">lzxcici@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                类别
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/cicilzx" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-05-09T02:47:52.000Z" itemprop="datePublished" class="page-time">
+  2020-05-09
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Introduction"><span class="post-toc-number">1.</span> <span class="post-toc-text">Introduction</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关工作"><span class="post-toc-number">2.</span> <span class="post-toc-text">相关工作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#图神经网络"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">图神经网络</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#BERT"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">BERT</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二进制代码相似性检测"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">二进制代码相似性检测</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#本文的模型"><span class="post-toc-number">3.</span> <span class="post-toc-text">本文的模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#整体结构"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">整体结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#语义感知模型"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">语义感知模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结构感知模型"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">结构感知模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#顺序感知模型"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">顺序感知模型</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-number">4.</span> <span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">数据集</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对比方法"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">对比方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结果"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">结果</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#整体表现"><span class="post-toc-number">4.3.1.</span> <span class="post-toc-text">整体表现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用于语义感知建模的模型变体"><span class="post-toc-number">4.3.2.</span> <span class="post-toc-text">用于语义感知建模的模型变体</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用于顺序感知建模的模型变体"><span class="post-toc-number">4.3.3.</span> <span class="post-toc-text">用于顺序感知建模的模型变体</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结论"><span class="post-toc-number">5.</span> <span class="post-toc-text">结论</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-05-09 10:47:52" datetime="2020-05-09T02:47:52.000Z"  itemprop="datePublished">2020-05-09</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/09/kECSBW.png" alt="论文标题" title>
+                </div>
+                <div class="image-caption">论文标题</div>
+            </figure>
+<p>原文链接：<a href="https://keenlab.tencent.com/en/whitepapers/Ordermatters.pdf" target="_blank" rel="noopener">Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection</a></p>
+<p>发表会议：AAAI-20（CCF A类会议，人工智能）</p>
+<p>二进制代码相似性检测是计算机安全中的一项重要任务，其目标是在不访问源代码的情况下检测相似的二进制函数。传统方法通常使用图匹配算法，但是速度满且不准确。近来，基于神经网络的方法取得了突出成果。一个二进制函数首先被表示为带有手工选择代码块特征的控制流图（CFG），然后用图神经网络计算图嵌入。这些方法更高效和有效，但是不能很好的捕获二进制代码的语义特征。本文我们提出有语义感知的神经网络，用于提取二进制代码的语义信息。特别地，我们使用BERT预训练二进制代码，用于一个token-level任务、一个block-level任务和两个graph-level任务。同时，我们发现CFG节点的顺序对图相似性检测有重要作用，因此我们采用CNN卷积神经网络提取邻接矩阵的顺序信息。我们的实验在2个任务、4个数据集上开展。实验结果表明，我们的方法优于最先进的模型。</p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>二进制代码相似性检测用于检测两个给定的二进制函数是否相似，它有很多计算机安全应用场景，如代码克隆检测、漏洞检测、恶意软件检测等。传统方法使用图匹配算法来计算两个函数的相似性。但是，这种基于图匹配的方法速度非常慢，而且很难适应不同的应用场景。近来，一种称之为Gemini的基于神经网络的方法取得巨大成果。图1（左）是一个CFG的例子，Gemini首先将其转化为attributed CFG（右），其中每个代码块的内容为手工选择的特征表示。最后，一个二进制函数可以添加上暹罗式结构，用于计算相似得分和损失得分。Gemini在计算速度和准确率上都优于传统的方法。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/09/kEHV8y.png" alt="图1：控制流图(CFG)及其手动选择块特征的一个例子。" title>
+                </div>
+                <div class="image-caption">图1：控制流图(CFG)及其手动选择块特征的一个例子。</div>
+            </figure>
+<p>尽管基于神经网络的模型已经取得了一些成果，但还有一些重要的东西没有考虑到。首先，如图1所示，每个代码块都被表示为一个人工选择特征的低维度嵌入特征，这会损失一些语义信息。第二，在表示二进制函数时，节点的顺序起着至关重要的作用，而现有方法没有设计相关方法去捕获节点顺序的信息。为了解决这两个问题，我们提出了一个包含三个组成部分的整体框架：语义感知模型，结构感知模型，和顺序感知模型。</p>
+<p>在语义感知模型中，我们使用NLP模型来解析二进制代码的语义信息。CFG代码块中的标识符被视为单词，代码块被视为句子。在现有工作中，Massarelli 使用word2vec模型训练标识符嵌入特征，然后使用注意力机制获取代码块的嵌入。Zuo使用神经机器翻译（NMT）学习跨平台的二进制代码语义特征。本文中，我们使用BERT来与训练标识符和代码块。与BERT类似，我们隐藏部分标识符来预训练蒙面语言模型任务（masked language model，MLM），然后解析所有相邻的代码块来预训练邻接节点任务（adjacency node prediction，ANP）。我们的模型可以同时获取标识符的嵌入和代码块的嵌入，而不是分类学习这两种嵌入。同时，因为我们的最终目标是产生整个图的特征表示，我们增加了两个graph-level的任务。一个用于判断两个代码块是否来源于同一个图，我们将此任务称之为图内代码块任务（block inside graph，BIG）。另一个任务是用于区分代码块属于哪个平台/优化器，称之为图分类任务（graph classification，GC）。我们发现这两个附加的任务可以帮助获取更多语义特征，比更好地学习代码块的特征表示。在预训练完代码块的嵌入特征后，我们调整它们用于graph-level的任务。</p>
+<p>在结构感知模型中，我们使用MPNN和GRU更新函数。 Xu等人证明了图神经网络可以像Weisfeiler-Lehman测试那样具有鉴别力。我们发现在每个步骤中使用GRU可以比直接使用tanh函数存储更多信息。</p>
+<p>在顺序感知模型中，我们试图设计一个结构用于CFG内部节点的顺序。图2展示了一个函数分别在x86-64和ARM平台上获取的两个CFG，和对应的邻接矩阵。这两个CFG有相似的节点顺序，例如节点1都连接了节点2和3，节点2都和节点4、5连接。它们的邻接矩阵非常相似。在探索了许多跨平台函数对之后，我们发现节点顺序的变化很小，基于此，我们提出一种简单的方法用于捕获节点顺序，那就是将邻接矩阵用于CNN模型。我们发现只有3层的CNN效果很好，我们还进一步尝试了其他CNN模型，如Resnet（He等人），并探讨了其他使用学习邻接矩阵的CNN模型。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/09/kEHt2c.png" alt="图2：函数" _freading"在不同平台(x86-64和arm)上的两个cfg和它们的邻接矩阵" title>
+                </div>
+                <div class="image-caption">图2：函数"_freading"在不同平台(x86-64和ARM)上的两个CFG和它们的邻接矩阵</div>
+            </figure>
+<p>我们的贡献有以下几点：</p>
+<ol>
+<li>我们提出了一个通用的框架来学习CFG的嵌入特征，它可以学习语义特征、结构特征和节点顺序特征。</li>
+<li>在语义感知模型中，我们采用BERT来预训练标识符和代码块的嵌入，完成了蒙面语言模型任务（MLM）和邻接点预测任务（ANP）。我们还增加了两个graph-level的任务——图内代码块任务（BIG）和图分类任务（GC），用于更好地表示代码块。</li>
+<li>在顺序感知模型中，我们发现节点顺序很有用，我们将邻接矩阵用于CNN模型，以获取CFG的节点顺序信息，这取得了很大成效。然后我们探索了其他适用于学习邻接矩阵的CNN模型。</li>
+<li>我们基于4个数据集，在2个任务上进行了实验，结果表明我们提出的模型效果优于目前最先进的模型。</li>
+</ol>
+<h1 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h1><h2 id="图神经网络"><a href="#图神经网络" class="headerlink" title="图神经网络"></a>图神经网络</h2><p>图神经网络用于学习图和节点的表示。通过增加深度神经网络的组成，有很多图模型，比如图卷积网络（GCN）、graphSAGE和图注意力网络（GAT）。GCN使用卷积层来更新节点嵌入特征。graphSAGE采用聚合函数来合并节点和邻接节点。GAT使用注意力机制从重要节点中接收更多信息。MPNN设计了一个图表示学习的整体框架，包含一个passing阶段和一个readout阶段。在passing阶段中，通过一些列步骤捕获邻接节点的信息，在readout阶段计算整个图的嵌入。除了MPNN，GN和NLNN也是图学习的整体框架。</p>
+<h2 id="BERT"><a href="#BERT" class="headerlink" title="BERT"></a>BERT</h2><p>BERT是NLP中最前进的预训练模型。BERT利用了Transformer，Transformer是一种学习机制，用于学习文本中单词之间的上下文关系。BERT使用两个策略来训练语言模型。一种是屏蔽语言模型任务（MLM），它是一种自我监督的预测掩码，可鼓励模型捕获有关语言的有用知识。另一个是分类任务，使模型在训练中区分两个句子，这称为下一个句子预测（NSP）。只需在核心模型上添加一小层，即可将BERT用于多种语言任务。在NSP任务中，[cls]令牌通常被视为句子嵌入，并且可以添加映射层以进行微调。BERT预先训练的模型在多种下游任务（例如跨语言模型，问题回答和文本生成）上都取得了很好的结果。</p>
+<h2 id="二进制代码相似性检测"><a href="#二进制代码相似性检测" class="headerlink" title="二进制代码相似性检测"></a>二进制代码相似性检测</h2><p>二进制代码相似性检测是计算机安全中的重要任务。传统方法使用图匹配算法来计算图相似度。 但是，这些方法缓慢且效率低下。一些研究尝试使用图核方法。 最近，Xu提出了一个基于GNN的模型Gemini，该模型比以前的方法有更好的结果。但是它使用手动选择的功能来表示CFG块，该CFG块可能包含的语义信息不足。Zuo在此任务上使用NLP模型，他们将标识符视为单词，将块视为句子，并使用LSTM编码句子的语义向量。为了确保具有相同语义信息的块具有相似的表示形式，它们使用暹罗网络并计算CFG对的余弦距离。他们将已经从同一段源代码编译的两个基本块视为等效。为了获得有标记的代码块对，他们修改了编译器以添加基本块特殊注释器，该注释器为每个生成的汇编块注释唯一的ID。但是，这种方法有两个明显的缺点。 一个是获得相似的块对是一个受监督的过程，需要专家的经验和领域知识，并且某些块无法唯一注释。 另一个是在实际使用中需要针对不同的平台组合训练不同的模型。</p>
+<h1 id="本文的模型"><a href="#本文的模型" class="headerlink" title="本文的模型"></a>本文的模型</h1><h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p>本文模型输入的是二进制代码函数的CFG，其中每个块都是中间表示的标识符序列。整体结构图如图3所示。在语义感知模型中，模型接收CFG作为输入，然后使用BERT预训练标识符嵌入和块嵌入；在结构感知模型中，使用MPNN和GRU更新函数计算图的语义结构嵌入$g_{ss}$；在顺序感知模型中，模型接收CFG的邻接矩阵作为输入，然后采用CNN计算图顺序嵌入$g_o$。最后，我们将这些都连接起来，使用MLP层计算最终的图嵌入$g_{final}$。</p>
+<script type="math/tex; mode=display">g_{final}= MLP([g_{ss}, g_o])</script><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/15/kYikFw.png" alt="图3：模型整体结构图，包含三个组成部分：语义感知模型、结构感知模型和顺序感知模型" title>
+                </div>
+                <div class="image-caption">图3：模型整体结构图，包含三个组成部分：语义感知模型、结构感知模型和顺序感知模型</div>
+            </figure>
+<h2 id="语义感知模型"><a href="#语义感知模型" class="headerlink" title="语义感知模型"></a>语义感知模型</h2><p>在语义感知建模中，我们提出了具有4个任务的BERT预训练模型来处理CFG。该模型具有几个优点。首先，我们可以从基于同一模型的不同平台，不同架构，不同编译优化选项生成的不同CFG中提取块嵌入。其次，由于我们有一个标识符级的任务，一个块级任务和两个图形级任务，因此可以从预训练过程中同时获得标识符级、块级和图形级信息。第三，训练过程完全基于CFG图，不需要修改编译器或其他操作即可获得相似的块对。</p>
+<p>我们的方法来自NLP中的句子嵌入任务，因为CFG中的块就像句子，块中的标记就像单词。这个任务是解析句子的嵌入，该任务主要有两个方法。一个是有监督的方法，比如文本分类训练；另一个是无监督的方法，比如n-gram特征和编码-解码跳过思想。我们使用基于BERT的改进模型来解析CFG中的块的嵌入。</p>
+<p>如图4所示，在我们预训练的阶段有4个任务。对于节点内的标识符序列，我们使用蒙面语言模型任务（MLM）解析块内的语义信息。MLM是标识符级的任务，它在输入层上屏蔽标识符并在输出层上预测它们。预训练邻接节点任务（ANP）是块级别的任务。在图中，块的信息不仅和块本身的信息相关，还和块的邻居相关，所以我们想让我们的模型学习这样的信息。在ANP任务中，我们解析一个图中所有邻接的块，然后在同一个图中随机采样一些块，来预测两个块是否是相邻的。这两个任务（MLM &amp; ANP）和原始BERT中的MLM &amp; NSP是相似的。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/16/kYAYks.png" alt="图4：BERT和4个任务：MLM,ANP,BIG,GC" title>
+                </div>
+                <div class="image-caption">图4：BERT和4个任务：MLM,ANP,BIG,GC</div>
+            </figure>
+<p>为了更好的利用图的信息，我们增加了两个辅助的有监督任务：图内代码块任务（BIG）和</p>
+<p>图分类任务（GC）。BIG任务和ANP任务类似，区别在于采样不同块对的方式不同。BIG任务试图使模型判别两个节点是否存在于同一个图中。我们随机采样了块对在/不在同一个图中，然后在BIG任务中预测。这个任务帮助模型理解块和图之间的关系，有助于我们图嵌入的任务。在我们的假设中，在不同编译选项下，不同的图和块可能会不一样。为了使我们的模型可以区分这些不同，我们设计了图分类任务（GC），GC可以使模型区分不同平台、不同构建或编译选项的的块。</p>
+<h2 id="结构感知模型"><a href="#结构感知模型" class="headerlink" title="结构感知模型"></a>结构感知模型</h2><p>从BERT预训练获得块嵌入后，我们使用MPNN来计算CFG图中的语义 &amp; 结构嵌入。具有消息函数M和更新函数U的消息传递阶段，运行T个时间步，然后读取函数R计算整个图的语义和结构嵌入$g_{ss}$。</p>
+<script type="math/tex; mode=display">m_{v}^{t+1} = \sum_{w \epsilon N(v)} M_t(h_v^t,h_w^t,e_{vw})​</script><script type="math/tex; mode=display">h_v^{t+1} = U_t(h_v^t, m_v^{t+1})</script><script type="math/tex; mode=display">g_{ss} = R(h_v^T | v \epsilon G)</script><p>其中G代表整个图，v代表节点，N(v) 代表v的邻接节点。我们在消息函数M上使用MLP，在更新函数U上使用GRU来学习时间迭代的顺序信息。（Xu et al.2018）证明求和函数是读出函数R的最佳选择，因此我们使用求和函数，并提取第0步和第T步的图形表示。$h_v^0$表示BERT预训练生成的最初的块嵌入，$h_v^t$表示t步骤的块嵌入。</p>
+<script type="math/tex; mode=display">m_v^{t+1} = \sum_{w \epsilon N(v)} MLP(h_w^t) ​</script><script type="math/tex; mode=display">h_v^{t+1} = GRU(h_v^t,m_v^{t+1})</script><script type="math/tex; mode=display">g_{ss} = \sum_{v \epsilon G}MLP(h_v^0,h_v^T)</script><h2 id="顺序感知模型"><a href="#顺序感知模型" class="headerlink" title="顺序感知模型"></a>顺序感知模型</h2><p>在这个部分中，我们的目标是解析CFG的节点顺序信息。 我们可以考虑CNN模型可以学到什么信息。图5展示了3个图（没有语义信息的块）和它们的邻接矩阵，这些邻接矩阵可以通过添加几个小的更改而彼此转换。在这三个图中，每个图都包含一个三角形。我们可以观察到在每个邻接矩阵中的三角形特征在邻接矩阵中具有一些共同的特征。首先考虑5a和5b，一个新的节点加入到三角形中，但是三角形的节点顺序没有被破坏。即使位移发生变化，两个相邻矩阵中的三角形特征（1，1，0，1的正方形）也不会改变。CNN可以捕获到这样的信息，因为当CNN看到许多训练数据时，它具有翻译不变性。在5c中，似乎添加的节点2破坏了三角形的节点顺序。但是，当我们看到邻接矩阵的第二行和第二列，三角形特征仍然存在。这就像图像缩放，如果我们把三角形特征的正方形看成2*2的图像，它可以被扩大成5c中3*3的图像。CNN在看到足够的训练数据后也可以学习这种尺度不变性。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/17/kYTCg1.png" alt="图5：示例图及其邻接矩阵" title>
+                </div>
+                <div class="image-caption">图5：示例图及其邻接矩阵</div>
+            </figure>
+<p>我们已经讨论过，由于CNN的平移不变性和规模不变性，CNN可能会学习节点顺序的细微变化。在我们的二进制代码相似性检测任务中，当在不同平台上编译相同函数时，节点顺序通常不会发生太大变化。大部分节点顺序的变化就是增加一个节点、删除一个节点，或替换几个节点，所以CNN对我们的任务很有用。除了提高学习节点顺序信息的准确性外，CNN还具有其他一些优势。首先，相比于传统的图特征解析算法，直接将邻接矩阵用于CNN的速度更快。第二，CNN可以添加到具有不同大小的输入上，因此它可以对不同大小的图形进行建模，而无需诸如填充和剪切之类的预处理。</p>
+<script type="math/tex; mode=display">g_o = Maxpooling(Resnet(A))</script><p>我们对邻接矩阵A使用Resnet（He et al.2016）。Resnet使用快捷连接来帮助信息轻松有效地传输。我们使用一个11层Resnet和3个剩余块。所有的特征映射都是3*3，因为我们像学习图中的微小变化。然后我们使用全局最大池化层来计算图顺序嵌入。 请注意，除非在最后一层，否则我们不使用任何池方法，因为输入有不同的大小。 在我们的实验中，我们观察到使用邻接矩阵的幂作为附加输入可以帮助提高性能。 为了防止过度拟合，我们在本文中不使用它们。（Nguyen）也在图上使用CNN，但是他们试图用CNN学习语义特征。我们的方法想用CNN学习节点顺序的特征，所以只使用邻接矩阵作为输入。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p> 我们在两个任务上评估我们的模型。第一个任务使跨平台二进制代码检测，相同的源代码在不同的平台上编译成不同的CFG，我们的目标是确保相同的源代码比其他源代码具有更高的相似性分数。与Gemini类似，我们在图嵌入模型上使用暹罗网络来减少损失，并使用余弦距离来计算图的相似性。我们选择x86-84和ARM两个平台，在gcc上用O2和O3编译选项。第二个任务使图分类任务， 我们对图嵌入的优化选项进行了分类。我们使用softmax函数，选择交叉熵作为损失函数。我们使用x86-64和ARM在gcc的O2和O3上编译。请注意，我们的方法对于检测不同编译器(例如：clang&amp;gcc)上的二进制代码也是有用的，在本文中我们不选择它作为数据集。数据集的基本统计数据如表1所示。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/17/kYTcGd.png" alt="表1" title>
+                </div>
+                <div class="image-caption">表1</div>
+            </figure>
+<h2 id="对比方法"><a href="#对比方法" class="headerlink" title="对比方法"></a>对比方法</h2><p>由于我们的模型有三个组成部分：语义感知模型、结构感知模型和顺序感知模型，我们设计不同实验来验证每个部分的有效性。</p>
+<p><strong>图核方法</strong> 我们选择使用Weisfeiler-Lehman kernel来计算图的相似性。</p>
+<p><strong>Gemini</strong> 使用Structure2vec来计算CFG的图嵌入，其中每个块是一个8维度的手工选择的特征。</p>
+<p><strong>MPNN</strong> 为了将我们的语义感知 &amp; 结构感知模型和Gemini对比，我们使用MPNN和8维度的特征。</p>
+<p><strong>Word2vec</strong> Word2vec是NLP中学习词嵌入的最基本方法。我们将每个token的嵌入求和作为块嵌入。</p>
+<p><strong>Skip thought</strong> skip thought是NLP中的另一个学习句子嵌入的方法，它接收中间句子作为输入，然后使用sequence-to-sequence模型来预测前面和后面的句子。</p>
+<p><strong>BERT （2任务）</strong> 我们使用BERT预训练CFG的块嵌入，这两个预训练任务是MLM和ANP。</p>
+<p><strong>BERT （4任务）</strong> 除了MLM和ANP任务，我们增加了两个图级别的任务（BIG和GC）来学习图级别的信息。</p>
+<p><strong>基于CNN的方法</strong> 为了计算顺序感知模型的效果，我们只将CNN模型用于邻接矩阵。我们使用3层CNN，7层Resnet，11层Resnet来评估基于CNN的模型是否有用。为了减少参数、防止过拟合，我们不适用更大的CNN模型。</p>
+<p><strong>CNN（随机）</strong> 为了查看CNN能否捕获节点顺序的信息，我们将CFG随机打乱，然后将相应的邻接矩阵输入到CNN中进行学习。</p>
+<p><strong>MPNN（没有语义）</strong> Xu等人已经证明CNN模型可以学习图的结构信息，我们使用没有语义信息的MPNN，每个块都有一个相同的原始输入（一个随机向量）。</p>
+<p><strong>MPNN（没有语义）+ CNN</strong> 我们将CNN节点顺序嵌入和CNN嵌入连接起来，来看这些模型在一起使用是否效果更好。</p>
+<p><strong>本文方法</strong> BERT（4任务）+MPNN+11层Resnet，包括语义感知模型、结构感知模型和顺序感知模型。</p>
+<p><strong>训练</strong> 使用Tensorflow实现模型，优化器使Adam，BERT预训练嵌入的维度是128，整个图的嵌入维度是64。BERT预训练最长的句子长度是128，transformer的深度是12，前馈dim是256。我们采用网格搜索来为每个带有验证集的模型找到最佳的超参数。我们模型的最佳优化设置是：learning rate：0.0001，batch size：10，iteration time steps：5。</p>
+<p><strong>评价指标</strong> 对于任务1，我们的目标是找到在不同平台上由相同源代码编译的二进制代码。这个任务和推荐系统相似，我们使用Rank1和平均相互排名（mean reciprocal rank，MRR）作为评估指标。Rank1表示真实对的rank是否具有最高分数。MRR用于评估排名任务，该任务使用第一个正确答案的排名的乘积逆。任务2是分类任务，因此我们使用准确性来评估模型。</p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><h3 id="整体表现"><a href="#整体表现" class="headerlink" title="整体表现"></a>整体表现</h3><p>表2和表3展示了不同模型在两个任务上的整体表现。BERT2 &amp; 4 是BERT2个任务（MLM &amp; ANP）和4个任务（MLM &amp; ANP &amp; BIG &amp; GC）的缩写。$MPNN_{WS}$是没有语义的MPNN的缩写。第一个块包含前面的方法，第二个块展示了语义感知模型的结果，第三个块展示了顺序感知模型的结果。和Gemini对比，我们的模型在两个任务上的效果都更好。MPNN在所有数据集是上的表现都优于Gemini，这是因为GRU更新函数可以存储更多的信息，所有在所有其他模型中我们使用MPNN。我们可以观察到基于NLP的块预处理特征比手工选择的特征效果好很多，而且顺序感知模型也在两个任务上取得好效果。在跨平台二进制代码检测任务中，语义信息比顺序信息更加有用，不同的CFG可能有相似的节点顺序，所以只使用节点顺序信息是不足够的。最后，我们最终的模型比其他所有模型的效果都好，接下来我们分开调查每个组成部分的有效性。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/17/kYT1du.png" alt="表2" title>
+                </div>
+                <div class="image-caption">表2</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/17/kYTGuD.png" alt="表3" title>
+                </div>
+                <div class="image-caption">表3</div>
+            </figure>
+<h3 id="用于语义感知建模的模型变体"><a href="#用于语义感知建模的模型变体" class="headerlink" title="用于语义感知建模的模型变体"></a>用于语义感知建模的模型变体</h3><p>为了验证BERT预训练的必要性和有效性，我们学习了几个变体。首先，基于NLP的预训练块特征（word2vec，skip thought，BERT2 &amp; 4）比手工特征的效果好，这说明为CFG建立复杂模型是有必要的。和word2vec、skip thought对比，有MLM和ANP的BERT任务不仅考虑了块级别的预测，还有token级别的预测，而且双向transformer有更好的能力解析有用信息。BIG和GC任务也很有用，可以提高1%-2%的结果，在这两个任务中，块嵌入可以学习图级别的信息，这可以帮助图级别的任务。我们在图6中展示了块嵌入，4个CFG和他们的块嵌入被分为4个方向，我们采用K-means将这些块嵌入聚类成4个分类，不同的聚类有不同的颜色（红，蓝，绿，紫）。我们可以观察到相同图的块趋于拥有相同的颜色，而且不同的图有不同的主要颜色。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/18/kYUggw.png" alt="图6" title>
+                </div>
+                <div class="image-caption">图6</div>
+            </figure>
+<h3 id="用于顺序感知建模的模型变体"><a href="#用于顺序感知建模的模型变体" class="headerlink" title="用于顺序感知建模的模型变体"></a>用于顺序感知建模的模型变体</h3><p>只是用基于CNN的模型可以在两个任务上获得好的结果。11层Resnet比3层CNN和7层Resnet的结果好一点，相比于$MPNN_{ws}$，基于CNN的模型效果更好。 当随机洗牌节点时，CNN什么也学不到。这说明CNN模型可以学习到图中的节点顺序，而且将邻接矩阵用于CNN解析节点顺序信息是很有意义的。此外，同时使用MPNN和CNN可以获得更好的效果，这说明我们的结构感知部分也很有效。为了探索CNN模型究竟学习到了什么，我们展示了一个CFG变化的例如，如图7所示。这两个CFG由同一段源代码编译而成，为了节省空间，我们展示不包含语义代码的图，左边是gcc和x86-64编译的，右边是gcc和ARM编译的。在不同平台下，代码被编译为不同的CFG，节点3在左图中被分开成了右图的节点3和4。在他们的邻接矩阵中，节点顺序“1，2，3”和“4，5，6”可以被捕获到。通过从邻接矩阵中解析特征，我们的CNN模型学习到这两个CFG的余弦相似度为0.971，而且整个平台上的代码检测等级为1，这表明CNN可以从邻接矩阵中学习到节点的顺序信息，这也符合我们的假设。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://t1.picb.cc/uploads/2020/05/18/kYUZdg.png" alt="图7" title>
+                </div>
+                <div class="image-caption">图7</div>
+            </figure>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>本文我们提出了一个包含语义感知、结构感知和顺序感知的框架，用于二进制代码图学习。我们观察到语义和节点顺序都对CFG的表示有重要作用。为了捕获语义特征，我们使用BERT预训练CFG的块，使用两个原始任务MLM和ANP，和两个附加任务BIG和GC。然后我们使用MPNN来解析结构信息。我们进一步提出了基于CNN的模型用于捕获节点顺序信息，我们在4个数据集、2个任务上展开实验，结果表明我们提出的模型优于最先进的方法。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-05-18T02:45:48.791Z" itemprop="dateUpdated">2020-05-18 10:45:48</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/" target="_blank" rel="external">https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://cicilzx.github.io">
+            <img src="/img/avatar.jpg" alt="CICI">
+            CICI
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vulnerability-Detection/">Vulnerability Detection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binary-code-similarity-detection/">binary code similarity detection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neural-networks/">neural networks</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/&title=《论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection》 — CICI's Blog&pic=https://cicilzx.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/&title=《论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection》 — CICI's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection》 — CICI's Blog&url=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/&via=https://cicilzx.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/02/26/Juliet-Test-Case代码集的使用/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Juliet Test Case代码集的使用</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>CICI &copy; 2019 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/&title=《论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection》 — CICI's Blog&pic=https://cicilzx.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/&title=《论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection》 — CICI's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《论文翻译 Order Matters:Semantic-Aware Neural Networks for Binary Code Similarity Detection》 — CICI's Blog&url=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/&via=https://cicilzx.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://cicilzx.github.io/2020/05/09/论文翻译-Order-Matters-Semantic-Aware-Neural-Networks-for-Binary-Code-Similarity-Detection/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEh0lEQVR42u3aS3LiQBAFQO5/aWY9YcDvVYkIGqdWhA2tVmrR9bvd4uv+5Pr535+/erbCs9/eX16vd5Xv9vaOCxMmTJgwfSRTsq39dpNvviZ+dsdnT/T6edtXggkTJkyYTmdKlnt9m+Tx9ugJSrJ+uyYmTJgwYfo7TLMwIjmSk5XbJDZ/qZgwYcKECdM7KNvK6uvv5MktJkyYMGH6a0z75fLC61VF5AR31vjEhAkTJkzfxJQfzN/3+S3zTZgwYcKE6WOY7uWVjM7kaWoeEMye4rKnxoQJEyZMxzK1TcG8VdnyzYq8Lc3meTFhwoQJ04lM+xZgXuTdBw2bwnT+8h58xoQJEyZMxzK1xdxZ2y8JJtpkNX8x7cuOVsaECRMmTF/E1G7l2WqzsGP2YMl/Z9/BhAkTJkxnMbVbbBPITcMy+W37YtpwBBMmTJgwnc6UH735pqNbxuFC/sBJUDJrwWLChAkTpnOZNkXbTUDQDta0AUHyIosWJiZMmDBhOpypHYhpx2s2B/xVpeF8hw++jwkTJkyYjmXKx1zaJDnfbp4A5yHLLBWvB3cwYcKECdPHM71eor2iNDIOO5LfJo/dlnSfDu5gwoQJE6YDmdprM0CTPHDb4JwFNPnn4YUJEyZMmD6GKS+SzlLHlmaDm5en61QZEyZMmDB9KVNebG3T47zxOSscXxXi/FchwIQJEyZMBzLl4zX5UT0rvLbZeR7EbIq2mDBhwoTpdKa98eyQfgdHHmSsogZMmDBhwnQgU7KtthGYJ8Z1ChonsbN7YcKECROm72OaDZvONpQkvTnTPiGPVsaECRMmTMcyvd7KZtyzbXDOAoI27Mjv9bSdiQkTJkyYjmKalUGvHfSZHefty2tL3pgwYcKE6TuY8mO1Hc3JU982Vb5qhKgOQTBhwoQJ04FMbasyv307RjMb0GlLwEm5+cHKmDBhwoTpcKY8QU22OyvvvuOOswAiqhBgwoQJE6ZDmNoDezaUkxzkM9D2IWeNW0yYMGHCdDpTkgTmrJsjf9a8nIU1+d8xYcKECdPpTJsUdNZQbId49uXaPCgZTi1hwoQJE6ZDmGZJaZ5etoXX2dBP/nrqZ8SECRMmTEcxbZLSHDff7r7onIcRxeARJkyYMGH6CqbZ0psAIm83ztLdNtkuquCYMGHChOkoplnDsm03JkM5SWDRwrV7eyCACRMmTJiOZUp+MGs0tn/ZE+QcbSiDCRMmTJjOZcqP9nyL7TGfp6B5Cr3q67YLYcKECROmQ5jyQzQvqkabWDc490HJL3fEhAkTJkzHMs2AZkHDbXHNAos8za53iwkTJkyYDmG6l1ebFeYF2U2JeT9a9MuvMGHChAnTsUz7I3l24+Sb+8S4vVf7kjBhwoQJ0ylMeWNy3+NroXOsqwICTJgwYcL0rUxt+7BNSutxmZL+qkIzJkyYMGHCtD9oW9bNqNBlrJgwYcKE6c8wtRD7ZLitVc+aqb9gYcKECROmw5n2gzVtijsrtiZ3ycOLIhDBhAkTJkzHMrWlz+TYzo/wTUAw2/9lKJgwYcKE6dOZ/gHxISYGLngUQQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>
