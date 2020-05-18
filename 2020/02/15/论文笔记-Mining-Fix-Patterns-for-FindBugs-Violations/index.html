@@ -376,7 +376,7 @@
 
 
         
-        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2020/02/15/论文笔记-Mining-Fix-Patterns-for-FindBugs-Violations/" target="_blank" rel="external">https://cicilzx.github.io/2020/02/15/论文笔记-Mining-Fix-Patterns-for-FindBugs-Violations/</a>
+        <br>原始链接：<a href="/2020/02/15/论文笔记-Mining-Fix-Patterns-for-FindBugs-Violations/" target="_blank" rel="external">https://cicilzx.github.io/2020/02/15/论文笔记-Mining-Fix-Patterns-for-FindBugs-Violations/</a>
         
     </div>
     
@@ -481,6 +481,30 @@
 
 
 
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "5B0Gm3mVoNVN2zKeUOSqqrnL-gzGzoHsz",
+            appKey: "MYa96MXjRXTofjhRIHAPjW56",
+            avatar: "mm/identicon/monsterid/wavatar/retro/hide",
+            placeholder: "快来评论吧~",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
 
 
 
@@ -633,26 +657,7 @@ MathJax.Hub.Queue(function() {
 
 
 
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-
-<script>
-(function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title = '死鬼去哪里了！';
-            clearTimeout(titleTime);
-        } else {
-            document.title = '(つェ⊂)咦!又好了!';
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
-        }
-    });
-})();
-</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -670,6 +675,8 @@ MathJax.Hub.Queue(function() {
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
+
+
 
 
 
